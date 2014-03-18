@@ -31,11 +31,17 @@ var DOM = {
     })
   },
 
-  addclass: function(selector){
-
+  addClass: function(selector, className){
+    elements = SweetSelector.select(selector)
+    _.each(elements, function(element){
+      element.classList.add(className);
+    })
   },
 
-  removeClass: function(selector){
-
+  removeClass: function(selector, className ){
+    elements = SweetSelector.select(selector)
+    _.each(elements, function(element){
+      element.classList.remove(className);
+    })
   }
 }
