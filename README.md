@@ -75,9 +75,10 @@ Hints:
 Implement the following functionalities:
 
 ```javascript
-EventDispatcher.on('.klass', 'shadi', function() { console.log("awesome") });
+EventDispatcher.on('.klass', 'click', function() { console.log("awesome") });
+
 // this should print "awesome" in the console.
-EventDispatcher.trigger('.klass', 'shadi');
+EventDispatcher.trigger('.klass', 'click');
 ```
 
 ###Release 3: Ajax
