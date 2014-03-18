@@ -43,23 +43,29 @@ var DOM = (function(sweetSelector){
       }
     }
   }(SweetSelector))
-// var miniQuery = (function(sweetSelector){
-//   return {
-//     select: function(selector){
-//       var whatever = selector
-//       return sweetSelector.select(whatever)
-//     }
-//   }
-// }(SweetSelector))
 
+EventDispatcher = (function(sweetSelector){
+  return {
+    on: function( selector, event, callback ) {
+      elements = sweetSelector.select( selector )
+      _.each( elements, function( element ) {
+        element.addEventListener( event, callback )
+      })
+    },
+
+    trigger: function( selector, event ) {
+      our_event = new CustomEvent( event )
+      elements = sweetSelector.select( selector )
+      _.each( elements, function( element ) {
+        !element.dispatchEvent( our_event )
+      })
+    }
+  }
+}(SweetSelector))
 
 var miniQuery = function(query) {
   return new MiniQueryTools(query);
 }
-
-// var miniQuery = function(query, selectorEngine) {
-//   return selectorEngine.select(query)
-// }
 
 var MiniQueryTools = function(query) {
   this.show = function() {
@@ -74,49 +80,14 @@ var MiniQueryTools = function(query) {
   this.removeClass = function(klass) {
     DOM.removeClass(query, klass);
   };
+  this.on = function(event, callback) {
+    EventDispatcher.on(query, event, callback);
+  };
+  this.trigger = function(event) {
+    EventDispatcher.trigger(query, event)
+  };
 }
-// miniQuery.prototype = {
-//   select: function(){
-//     console.log("hello")
-//     // return SweetSelector.select(selector)
-//   }
-// }();
 
-
-// miniQuery.prototype =
-//   SweetSelector: {
-//     select: function(selector){
-//       var symbol = selector[0];
-//       var element = selector.slice(1);
-//       if(symbol == '#'){
-//         return [document.getElementById(element)]
-//       } else if (symbol == '.'){
-//         return document.getElementsByClassName(element)
-//       } else {
-//         return document.getElementsByTagName(selector)
-//       }
-//     }
-//   },
-
-
-//   EventDispatcher = (function(sweetSelector){
-//     return {
-//       on: function( selector, event, callback ) {
-//         elements = sweetSelector.select( selector )
-//         _.each( elements, function( element ) {
-//           element.addEventListener( event, callback )
-//         })
-//       },
-
-//       trigger: function( selector, event ) {
-//         our_event = new CustomEvent( event )
-//         elements = sweetSelector.select( selector )
-//         _.each( elements, function( element ) {
-//           !element.dispatchEvent( our_event )
-//         })
-//       }
-//     }
-//   }(SweetSelector))
 
 //   AjaxWrapper = (function(){
 //     return {
