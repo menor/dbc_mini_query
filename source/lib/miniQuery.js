@@ -45,3 +45,22 @@ var DOM = {
     })
   }
 }
+
+var EventDispatcher = {
+  on: function( selector, event, callback ) {
+    elements = SweetSelector.select( selector )
+    _.each( elements, function( element ) {
+      element.addEventListener( event, callback )
+    })
+  },
+
+  trigger: function( selector, event ) {
+    our_event = new CustomEvent( event )
+    elements = SweetSelector.select( selector )
+    _.each( elements, function( element ) {
+      !element.dispatchEvent( our_event )
+    })
+  }
+
+
+}
