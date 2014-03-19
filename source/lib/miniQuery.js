@@ -63,9 +63,36 @@ EventDispatcher = (function(sweetSelector){
   }
 }(SweetSelector))
 
+AjaxWrapper = (function(){
+  return {
+    request: function( options ) {
+      sweetRequest = new XMLHttpRequest();
+      sweetRequest.open(options.type, options.url, true);
+
+      sweetRequest.onload = function() {
+        debugger
+        if (sweetRequest.status >= 200 && sweetRequest.status < 400){
+          options.success();
+        }
+      };
+
+      sweetRequest.onerror = function() {
+        options.fail()
+      };
+
+      sweetRequest.send();
+    }
+  }
+}(SweetSelector))
+
 var miniQuery = function(query) {
   return new MiniQueryTools(query);
-}
+};
+
+miniQuery.ajax = function(options) {
+  AjaxWrapper.request(options);
+};
+
 
 var MiniQueryTools = function(query) {
   this.show = function() {
@@ -86,27 +113,9 @@ var MiniQueryTools = function(query) {
   this.trigger = function(event) {
     EventDispatcher.trigger(query, event)
   };
-}
 
+  this.ajax = function(options){
+    AjaxWrapper.request(options)
+  };
+};
 
-//   AjaxWrapper = (function(){
-//     return {
-//       request: function( options ) {
-//         sweetRequest = new XMLHttpRequest();
-//         sweetRequest.open(options.type, options.url, true);
-
-//         sweetRequest.onload = function() {
-//           if (sweetRequest.status >= 200 && sweetRequest.status < 400){
-//             options.success();
-//           }
-//         };
-
-//         sweetRequest.onerror = function() {
-//           options.fail()
-//         };
-
-//         sweetRequest.send();
-//       }
-//     }
-//   }())
-// };
