@@ -85,18 +85,6 @@ AjaxWrapper = (function(){
   }
 }(SweetSelector))
 
-//Yours
-// miniQuery returns new MQTools object/function
-
-//Ours
-// miniQuery is an IIFE
-// miniQuery takes all the other modules as arguments
-// miniQuery returns a Tool object/function
-// Tool returns a new Options object
-// Tool has an ajax method defined on itself.
-
-// var miniQuery = (function(D,E,A,S){
-// }(DOM, EventDispatcher, AjaxWrapper, SweetSelector))
 var miniQuery = (function(sweetselector, dom, eventor, ajaxer) {
 
   var MiniQueryTools = function(query){
@@ -135,3 +123,5 @@ var miniQuery = (function(sweetselector, dom, eventor, ajaxer) {
   return Creator
 
 }(SweetSelector.select, DOM, EventDispatcher, AjaxWrapper));
+
+var $ = miniQuery
