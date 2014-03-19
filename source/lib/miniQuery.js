@@ -85,37 +85,53 @@ AjaxWrapper = (function(){
   }
 }(SweetSelector))
 
-var miniQuery = function(query) {
-  return new MiniQueryTools(query);
-};
+//Yours
+// miniQuery returns new MQTools object/function
 
-miniQuery.ajax = function(options) {
-  AjaxWrapper.request(options);
-};
+//Ours
+// miniQuery is an IIFE
+// miniQuery takes all the other modules as arguments
+// miniQuery returns a Tool object/function
+// Tool returns a new Options object
+// Tool has an ajax method defined on itself.
 
+// var miniQuery = (function(D,E,A,S){
+// }(DOM, EventDispatcher, AjaxWrapper, SweetSelector))
+var miniQuery = (function(sweetselector, dom, eventor, ajaxer) {
 
-var MiniQueryTools = function(query) {
-  this.show = function() {
-    DOM.show(query);
-  };
-  this.hide = function() {
-    DOM.hide(query);
-  };
-  this.addClass = function(klass) {
-    DOM.addClass(query, klass);
-  };
-  this.removeClass = function(klass) {
-    DOM.removeClass(query, klass);
-  };
-  this.on = function(event, callback) {
-    EventDispatcher.on(query, event, callback);
-  };
-  this.trigger = function(event) {
-    EventDispatcher.trigger(query, event)
+  var MiniQueryTools = function(query){
+    this.el = query;
+  }
+
+  MiniQueryTools.prototype = {
+    show: function() {
+      dom.show(this.el);
+    },
+    hide: function() {
+      dom.hide(this.el);
+    },
+    addClass: function(klass) {
+      dom.addClass(this.el, klass);
+    },
+    removeClass: function(klass) {
+      dom.removeClass(this.el, klass);
+    },
+    on: function(event, callback) {
+      eventor.on(this.el, event, callback);
+    },
+    trigger: function(event) {
+      eventor.trigger(this.el, event)
+    }
+  }
+
+  var Creator = function(query){
+    return new MiniQueryTools(query)
+  }
+
+  Creator.ajax = function(options) {
+    ajaxer.request(options);
   };
 
-  this.ajax = function(options){
-    AjaxWrapper.request(options)
-  };
-};
+  return Creator
 
+}(SweetSelector.select, DOM, EventDispatcher, AjaxWrapper));
